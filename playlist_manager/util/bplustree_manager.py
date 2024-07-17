@@ -13,4 +13,7 @@ class BPlusTree:
         self.root = BPlusTreeNode(t, True)
         self.t = t
 
+    def insert(self, key, value):
+        root = self.root
+        if len(root.keys) == 2 * self.t - 1:
 
