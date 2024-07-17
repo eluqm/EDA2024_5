@@ -1,6 +1,6 @@
 # playlist_manager/main.py
 from util.file_manager import FileManager
-from util.btree_manager import BTree
+from EDA2024_5.playlist_manager.util.bplustree_manager import BTree
 from util.hashmap_manager import HashMap
 
 file_path = 'data/spotify_data.csv'
