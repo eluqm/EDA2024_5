@@ -60,16 +60,16 @@ class BPlusTree:
                     index += 1
             self._insert_non_full(node.children[index], key, value)
 
-        def search(self, key):
-            return self._search(self.root, key)
+    def search(self, key):
+        return self._search(self.root, key)
         
-        def _search(self, node, key):
-            index = 0
-            while index < len(node.keys) and key > node.keys[index][0]:
-                index += 1
-            if index < len(node.keys) and key == node.keys[index][0]:
-                return node.keys[index][1]
-            if node.leaf:
-                return None
-            return self._search(node.children[index], key)
+    def _search(self, node, key):
+        index = 0
+        while index < len(node.keys) and key > node.keys[index][0]:
+            index += 1
+        if index < len(node.keys) and key == node.keys[index][0]:
+            return node.keys[index][1]
+        if node.leaf:
+            return None
+        return self._search(node.children[index], key)
 
