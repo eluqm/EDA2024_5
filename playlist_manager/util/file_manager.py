@@ -31,3 +31,6 @@ class FileManager:
     def get_song_by_id(self, song_id):
         return self.songs.get(song_id)
 
+    def search_songs_by_name(self, song_name):
+        song_ids = self.trie.search(song_name)
+        return [self.get_song_by_id(song_id) for song_id in song_ids]
