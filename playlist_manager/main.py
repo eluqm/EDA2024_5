@@ -18,20 +18,45 @@ def buscar_y_agregar_cancion():
         song_name = input("Ingrese el nombre de la canción que desea agregar (o 'terminar' para finalizar): ").strip()
         if song_name.lower() == 'terminar':
             break
-        song_ids = trie.search(song_name)
-        if song_ids:
-            for song_id in song_ids:
-                song = file_manager.get_song_by_id(song_id)
-                if song:
-                    hashmap.insert(song_id, song)
-                    print(f"Se agregó la canción: {song.track_name}")
-                else:
-                    print(f"No se encontró la canción con ID {song_id}")
+        songs = file_manager.search_songs_by_name(song_name)
+        if songs:
+            print("Se encontraron las siguientes canciones:")
+            for idx, song in enumerate(songs):
+                print(f"{idx + 1}. {song.track_name} by {song.artist_name} ({song.year})")
+            seleccion = int(input("Seleccione el número de la canción que desea agregar: ")) - 1
+            if 0 <= seleccion < len(songs):
+                song = songs[seleccion]
+                hashmap.insert(song.song_id, song)
+                print(f"Se agregó la canción: {song.track_name} by {song.artist_name}")
+            else:
+                print("Selección inválida.")
         else:
             print("No se encontraron canciones con ese nombre.")
 
+def eliminar_cancion():
+    song_name = input("Ingrese el nombre de la canción que desea eliminar: ").strip()
+    song_ids = trie.search(song_name)
+    if song_ids:
+        print("Se encontraron las siguientes canciones:")
+        for idx, song_id in enumerate(song_ids):
+            song = file_manager.get_song_by_id(song_id)
+            print(f"{idx + 1}. {song.track_name} by {song.artist_name} ({song.year})")
+        seleccion = int(input("Seleccione el número de la canción que desea eliminar: ")) - 1
+        if 0 <= seleccion < len(song_ids):
+            song_id = song_ids[seleccion]
+            hashmap.delete(song_id)
+            print(f"Se eliminó la canción con ID: {song_id}")
+        else:
+            print("Selección inválida.")
+    else:
+        print("No se encontraron canciones con ese nombre.")
+
+
 def mostrar_playlist():
-  pass
+    keys = hashmap.get_all_keys()
+    for key in keys:
+        song = hashmap.get(key)
+        print(f"{song.track_name} by {song.artist_name}")
 
 def ordenar_playlist():
   pass
@@ -52,6 +77,8 @@ while True:
     elif opcion == '3':
         ordenar_playlist()
     elif opcion == '4':
+        eliminar_cancion()
+    elif opcion == '5':
         print("Saliendo...")
         break
     else:
