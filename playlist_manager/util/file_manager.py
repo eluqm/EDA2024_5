@@ -1,12 +1,17 @@
+# playlist_manager/util/file_manager.py
+
 import csv
 from model.song import Song
+from util.trie import Trie
 
 class FileManager:
     def __init__(self, file_path):
         self.file_path = file_path
+        self.trie = Trie()
+        self.songs = {}
+        self.load_songs()
 
     def load_songs(self):
-        songs = []
         with open(self.file_path, newline='', encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile)
             next(reader)  # Saltar la cabecera
@@ -20,5 +25,9 @@ class FileManager:
                     float(liveness), float(valence), float(tempo),
                     int(duration_ms), int(time_signature)
                 )
-                songs.append(song)
-        return songs
+                self.trie.insert(track_name, song_id)
+                self.songs[song_id] = song
+
+    def get_song_by_id(self, song_id):
+        return self.songs.get(song_id)
+
