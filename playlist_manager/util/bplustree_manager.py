@@ -16,4 +16,11 @@ class BPlusTree:
     def insert(self, key, value):
         root = self.root
         if len(root.keys) == 2 * self.t - 1:
+            temp = BPlusTreeNode(self.t)
+            self.root = temp
+            temp.children.append(root)
+            self._split_child(temp, 0)
+            self._insert_non_full(temp, key, value)
+        else:
+            self._insert_non_full(root, key, value)
 
