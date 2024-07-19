@@ -1,15 +1,15 @@
 # playlist_manager/util/file_manager.py
-
 import csv
 from model.song import Song
 from util.trie import Trie
 
 class FileManager:
-    def __init__(self, file_path):
+    def __init__(self, file_path, memory_manager, prefix_length=5):
         self.file_path = file_path
+        self.memory_manager = memory_manager
         self.trie = Trie()
-        self.songs = {}
-        self.load_songs()
+        self.song_index = {}
+        self.prefix_length = prefix_length
 
     def load_songs(self):
         with open(self.file_path, newline='', encoding='utf-8') as csvfile:
@@ -25,17 +25,20 @@ class FileManager:
                     float(liveness), float(valence), float(tempo),
                     int(duration_ms), int(time_signature)
                 )
-                self.trie.insert(track_name, song_id)
-                self.songs[song_id] = song
+                prefix = track_name[:self.prefix_length]
+                self.trie.insert(prefix, song_id)
+                self.song_index[song_id] = song
 
     def get_song_by_id(self, song_id):
-        return self.songs.get(song_id)
+        song = self.memory_manager.get_from_cache(song_id)
+        if song is None:
+            song = self.song_index.get(song_id)
+            if song:
+                self.memory_manager.add_to_cache(song_id, song)
+        return song
 
     def search_songs_by_name(self, song_name):
-        song_ids = self.trie.search(song_name)
-        return [self.get_song_by_id(song_id) for song_id in song_ids]
-    def insert_song(tree, song, attribute):
-        if attribute == 'popularity':
-            tree.insert(song.popularity, song)
-        elif attribute == 'artist':
-            tree.insert(song.artist, song)
+        prefix = song_name[:self.prefix_length]
+        song_ids = self.trie.search(prefix)
+        songs = [self.get_song_by_id(song_id) for song_id in song_ids]
+        return [song for song in songs if song and song.track_name.startswith(song_name)]
