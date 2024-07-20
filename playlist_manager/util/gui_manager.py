@@ -1,7 +1,5 @@
-# playlist_manager/util/gui_manager.py
-
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, simpledialog
 from util.playlist_manager import PlaylistManager
 
 class GUIManager:
@@ -50,14 +48,45 @@ class GUIManager:
         if song_name:
             songs = self.playlist_manager.file_manager.search_songs_by_name(song_name)
             if songs:
-                selected_song = songs[0]  # Por simplicidad, agregamos la primera canción encontrada
-                self.playlist_manager.agregar_cancion(selected_song)
-                self.actualizar_playlist()
-                messagebox.showinfo("Éxito", f"Se agregó la canción: {selected_song.track_name} by {selected_song.artist_name}")
+                self.show_search_results(songs)
             else:
                 messagebox.showwarning("Sin Resultados", "No se encontraron canciones con ese nombre.")
         else:
             messagebox.showwarning("Entrada Inválida", "Por favor ingrese el nombre de una canción.")
+
+    def show_search_results(self, songs):
+        result_window = tk.Toplevel(self.root)
+        result_window.title("Resultados de la Búsqueda")
+        result_window.geometry("400x300")
+
+        tree_results = ttk.Treeview(result_window, columns=("track", "artist", "year"), show="headings")
+        tree_results.heading("track", text="Canción")
+        tree_results.heading("artist", text="Artista")
+        tree_results.heading("year", text="Año")
+        tree_results.grid(row=0, column=0, sticky="nsew")
+
+        scroll_results = ttk.Scrollbar(result_window, orient=tk.VERTICAL, command=tree_results.yview)
+        tree_results.configure(yscroll=scroll_results.set)
+        scroll_results.grid(row=0, column=1, sticky="ns")
+
+        for song in songs:
+            tree_results.insert("", "end", values=(song.track_name, song.artist_name, song.year))
+
+        button_add = ttk.Button(result_window, text="Agregar a la Playlist", command=lambda: self.agregar_cancion(tree_results, songs, result_window))
+        button_add.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
+
+    def agregar_cancion(self, tree, songs, window):
+        selected_item = tree.selection()
+        if selected_item:
+            item = tree.item(selected_item)
+            track_name = item['values'][0]
+            song = next(song for song in songs if song.track_name == track_name)
+            self.playlist_manager.agregar_cancion(song)
+            self.actualizar_playlist()
+            window.destroy()
+            messagebox.showinfo("Éxito", f"Se agregó la canción: {song.track_name} by {song.artist_name}")
+        else:
+            messagebox.showwarning("Selección Inválida", "Por favor seleccione una canción para agregar.")
 
     def eliminar_cancion(self):
         selected_item = self.tree_playlist.selection()
@@ -70,7 +99,10 @@ class GUIManager:
             messagebox.showwarning("Selección Inválida", "Por favor seleccione una canción para eliminar.")
 
     def ordenar_playlist(self):
-        attribute = "popularity"  # Aquí puedes solicitar al usuario el atributo por el cual desea ordenar
+        attribute = simpledialog.askstring("Ordenar Playlist", "Seleccione el atributo (popularidad, año, duración):")
+        if attribute not in ["popularidad", "año", "duración"]:
+            messagebox.showerror("Error", "Atributo inválido.")
+            return
         ordered_songs = self.playlist_manager.get_songs_ordered_by(attribute)
         self.actualizar_playlist(ordered_songs)
 
@@ -81,9 +113,4 @@ class GUIManager:
         for song in songs:
             self.tree_playlist.insert("", "end", values=(song.song_id, song.track_name, song.artist_name, song.year))
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    file_path = 'data/spotify_data.csv'
-    playlist_manager = PlaylistManager(3, file_path)
-    gui_manager = GUIManager(root, playlist_manager)
-    root.mainloop()
+
