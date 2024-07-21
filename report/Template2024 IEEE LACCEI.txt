@@ -1,0 +1,113 @@
+﻿Título Artículo
+
+
+Nombres y Apellidos Autor1, 
+1Universidad, Pais, correo@unsa.edu.pe 
+
+
+
+
+
+
+Abstract– 
+Keywords-- List at most 5 key index terms here.
+
+
+1. Introducción
+
+
+II. Keyword 1 (Marco Teórico)
+A.        Subtema 1
+
+
+B.        Subtema 2
+
+
+C.        Subtema 3
+
+
+III. Keyword  2  (Marco Teórico)
+
+
+A.        Subtema 1
+
+
+B.        Subtema 2
+
+
+C.        Subtema 3
+
+
+  
+
+IV. Metodología
+1. Caso 1
+
+
+Institución y lugar
+Participantes: cantidad de participantes (Grupo de control y grupo experimental), edades, enfermedad, genero.
+Tecnología utilizada: software/hardware 
+Protocolo o intervención: cuantas sesiones, duración de sesiones, cuantas semanas o meses?
+Instrumentos: como se evaluó el resultado: test clínicos o test de ingeniería 
+
+
+2. Caso 2
+Institución y lugar
+Participantes: cantidad de participantes (Grupo de control y grupo experimental), edades, enfermedad, genero.
+Tecnología utilizada: software/hardware 
+Protocolo o intervención: cuantas sesiones, duración de sesiones, cuantas semanas o meses?
+Instrumentos: como se evaluó el resultado: test clínicos o test de ingeniería 
+
+
+3. Caso 3
+Institución y lugar
+Participantes: cantidad de participantes (Grupo de control y grupo experimental), edades, enfermedad, genero.
+Tecnología utilizada: software/hardware 
+Protocolo o intervensión: cuantas sesiones, duración de sesiones, cuantas semanas o meses?
+Instrumentos: como se evaluó el resultado: test clínicos o test de ingeniería 
+
+
+4. Caso 4
+Contexto (institución y lugar), tiempo que duró la experiencia, cantidad de participantes, resultados obtenidos, software/hardware utilizado, metodología utilizados (cuantas sesiones, duración de sesiones, cuantas semanas o meses? s
+
+
+
+
+V. Resultados y Discusión
+
+
+
+
+1. Semejanzas
+2. Diferencias
+3. Discusión
+4. Propuesta
+Conclusiones
+
+
+Referencias
+1. Manuscript Templates for Conference Proceedings, IEEE. http://www.ieee.org/conferences_events/conferences/publishing/templates.html
+2. M. King, B. Zhu, and S. Tang, “Optimal path planning,” Mobile Robots, vol. 8, no. 2, pp. 520-531, March 2001.
+3. H. Simpson, Dumb Robots, 3rd ed., Springfield: UOS Press, 2004, pp.6-9.
+4. M. King and B. Zhu, “Gaming strategies,” in Path Planning to the West, vol. II, S. Tang and M. King, Eds. Xian: Jiaoda Press, 1998, pp. 158-176.
+5. B. Simpson, et al, “Title of paper goes here if known,” unpublished.
+6. J.-G. Lu, “Title of paper with only the first word capitalized,” J. Name Stand. Abbrev., in press.
+7. Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, “Electron spectroscopy studies on magneto-optical media and plastic substrate interface,” IEEE Translated J. Magn. Japan, vol. 2, pp. 740-741, August 1987 [Digest 9th Annual Conf. Magnetics Japan, p. 301, 1982]. 
+8. M. Young, The Technical Writer’s Handbook, Mill Valley, CA: University Science, 1989.
+
+
+
+
+
+
+
+
+
+
+ANEXOS
+
+
+Note caption is centered below figures, but above tables.
+
+
+18th LACCEI International Multi-Conference for Engineering, Education, and Technology: “Engineering, Integration, and Alliances for a Sustainable Development” “Hemispheric Cooperation for Competitiveness and Prosperity on a Knowledge-Based Economy”, 29-31 July 2020, Buenos Aires, Argentina.
