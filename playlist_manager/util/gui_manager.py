@@ -10,41 +10,51 @@ class GUIManager:
 
     def create_widgets(self):
         self.root.title("Gestor de Lista de Reproducción")
-        self.root.geometry("600x400")
+        self.root.geometry("600x800")
+        self.root.configure(bg='black')
 
-        self.search_frame = ttk.Frame(self.root, padding="10")
-        self.search_frame.grid(row=0, column=0, sticky="ew")
+        # Album Cover and Title
+        self.album_frame = ttk.Frame(self.root, padding="10")
+        self.album_frame.grid(row=0, column=0, sticky="ew", pady=20)
 
-        self.label_search = ttk.Label(self.search_frame, text="Buscar Canción:")
-        self.label_search.grid(row=0, column=0, padx=5, pady=5)
+        self.album_cover = tk.Label(self.album_frame, image=tk.PhotoImage(file='path/to/album_cover.png'), bg='black')
+        self.album_cover.grid(row=0, column=0, padx=5, pady=5)
 
-        self.entry_search = ttk.Entry(self.search_frame)
-        self.entry_search.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
+        self.album_title = tk.Label(self.album_frame, text="Album Title", font=("Helvetica", 20), fg='white', bg='black')
+        self.album_title.grid(row=1, column=0, padx=5, pady=5)
 
-        self.button_search = ttk.Button(self.search_frame, text="Buscar y Agregar", command=self.buscar_y_agregar_cancion)
-        self.button_search.grid(row=0, column=2, padx=5, pady=5)
+        self.play_button = ttk.Button(self.album_frame, text="Play", command=self.play_album)
+        self.play_button.grid(row=2, column=0, padx=5, pady=5)
 
+        # Playlist TreeView
         self.playlist_frame = ttk.Frame(self.root, padding="10")
         self.playlist_frame.grid(row=1, column=0, sticky="nsew")
 
-        self.tree_playlist = ttk.Treeview(self.playlist_frame, columns=("track", "artist", "year"), show="headings")
-        self.tree_playlist.heading("track", text="Canción")
-        self.tree_playlist.heading("artist", text="Artista")
-        self.tree_playlist.heading("year", text="Año")
+        self.tree_playlist = ttk.Treeview(self.playlist_frame, columns=("track", "artist"), show="headings", height=15)
+        self.tree_playlist.heading("track", text="Song Title")
+        self.tree_playlist.heading("artist", text="Artist")
         self.tree_playlist.grid(row=0, column=0, sticky="nsew")
 
         self.scroll_playlist = ttk.Scrollbar(self.playlist_frame, orient=tk.VERTICAL, command=self.tree_playlist.yview)
         self.tree_playlist.configure(yscroll=self.scroll_playlist.set)
         self.scroll_playlist.grid(row=0, column=1, sticky="ns")
 
-        self.button_delete = ttk.Button(self.root, text="Eliminar Canción", command=self.eliminar_cancion)
-        self.button_delete.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
+        # Control Buttons
+        self.control_frame = ttk.Frame(self.root, padding="10")
+        self.control_frame.grid(row=2, column=0, sticky="ew")
 
-        self.button_order = ttk.Button(self.root, text="Ordenar Playlist", command=self.ordenar_playlist)
-        self.button_order.grid(row=3, column=0, padx=5, pady=5, sticky="ew")
+        self.button_add = ttk.Button(self.control_frame, text="Agregar Canción", command=self.buscar_cancion)
+        self.button_add.grid(row=0, column=0, padx=5, pady=5)
 
-    def buscar_y_agregar_cancion(self):
-        song_name = self.entry_search.get().strip()
+        self.button_delete = ttk.Button(self.control_frame, text="Eliminar Canción", command=self.eliminar_cancion)
+        self.button_delete.grid(row=0, column=1, padx=5, pady=5)
+
+        self.button_order = ttk.Button(self.control_frame, text="Ordenar Playlist", command=self.ordenar_playlist)
+        self.button_order.grid(row=0, column=2, padx=5, pady=5)
+
+
+    def buscar_cancion(self):
+        song_name = simpledialog.askstring("Buscar Canción", "Ingrese el nombre de la canción:")
         if song_name:
             songs = self.playlist_manager.file_manager.search_songs_by_name(song_name)
             if songs:
@@ -59,10 +69,9 @@ class GUIManager:
         result_window.title("Resultados de la Búsqueda")
         result_window.geometry("400x300")
 
-        tree_results = ttk.Treeview(result_window, columns=("track", "artist", "year"), show="headings")
-        tree_results.heading("track", text="Canción")
-        tree_results.heading("artist", text="Artista")
-        tree_results.heading("year", text="Año")
+        tree_results = ttk.Treeview(result_window, columns=("track", "artist"), show="headings")
+        tree_results.heading("track", text="Song Title")
+        tree_results.heading("artist", text="Artist")
         tree_results.grid(row=0, column=0, sticky="nsew")
 
         scroll_results = ttk.Scrollbar(result_window, orient=tk.VERTICAL, command=tree_results.yview)
@@ -70,7 +79,7 @@ class GUIManager:
         scroll_results.grid(row=0, column=1, sticky="ns")
 
         for song in songs:
-            tree_results.insert("", "end", values=(song.track_name, song.artist_name, song.year))
+            tree_results.insert("", "end", values=(song.track_name, song.artist_name))
 
         button_add = ttk.Button(result_window, text="Agregar a la Playlist", command=lambda: self.agregar_cancion(tree_results, songs, result_window))
         button_add.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
@@ -103,7 +112,7 @@ class GUIManager:
         if attribute not in ["popularidad", "año", "duración"]:
             messagebox.showerror("Error", "Atributo inválido.")
             return
-        ordered_songs = self.playlist_manager.get_songs_ordered_by(attribute)
+        ordered_songs = self.playlist_manager.ordenar_playlist(attribute)
         self.actualizar_playlist(ordered_songs)
 
     def actualizar_playlist(self, songs=None):
@@ -111,6 +120,5 @@ class GUIManager:
             self.tree_playlist.delete(item)
         songs = songs or [self.playlist_manager.hashmap.get(key) for key in self.playlist_manager.hashmap.get_all_keys()]
         for song in songs:
-            self.tree_playlist.insert("", "end", values=(song.song_id, song.track_name, song.artist_name, song.year))
-
+            self.tree_playlist.insert("", "end", values=(song.track_name, song.artist_name))
 

@@ -13,11 +13,14 @@ class PlaylistManager:
 
     def agregar_cancion(self, song):
         self.hashmap.insert(song.song_id, song)
-        self.bplustree.insert(song.popularity, song)  # Cambia `song.popularity` por el atributo adecuado si es necesario
+        self.bplustree.insert(song.popularity, song)
 
     def eliminar_cancion(self, song_id):
         self.hashmap.delete(song_id)
-        self.bplustree.delete(song_id)  # Asegúrate de eliminar correctamente del B+ Tree
+        # Actualiza el método para usar Trie
+        song = self.hashmap.get(song_id)
+        if song:
+            self.file_manager.trie.delete(song.track_name, song_id)
 
     def ordenar_playlist(self, attribute, order='ascendente'):
         songs = [self.hashmap.get(key) for key in self.hashmap.get_all_keys()]
@@ -28,7 +31,3 @@ class PlaylistManager:
         elif attribute == 'duración':
             songs.sort(key=lambda song: song.duration_ms, reverse=(order == 'descendente'))
         return songs
-
-    def get_songs_ordered_by(self, attribute):
-        # Método para obtener canciones ordenadas por un atributo específico
-        pass
