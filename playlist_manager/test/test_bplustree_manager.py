@@ -31,4 +31,9 @@ def test_insert_duplicate(self):
     self.tree.insert(10, "new_value10")
     self.assertEqual(self.tree.search(10), "new_value10")
 
+def test_insert_many(self):
+    for i in range(100):
+        self.tree.insert(i, f"value{i}")
 
+    for i in range(100):
+        self.assertEqual(self.tree.search(i), f"value{i}")
