@@ -47,3 +47,8 @@ def test_search_songs_by_name(self):
     self.assertEqual(songs[0].track_name, 'Test Song 1')
     self.assertEqual(songs[1].track_name, 'Test Song 2')
     self.assertEqual(len(self.file_manager.search_songs_by_name("Song")), 3)
+
+def test_search_nonexistent_song(self):
+    self.file_manager.load_songs()
+    songs = self.file_manager.search_songs_by_name("Nonexistent Song")
+    self.assertEqual(len(songs), 0)
