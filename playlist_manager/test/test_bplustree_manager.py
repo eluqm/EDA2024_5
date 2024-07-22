@@ -44,3 +44,12 @@ def test_delete(self):
 
     self.tree.delete(5)
     self.assertIsNotNone(self.tree.search(5)) 
+
+def test_range_search(self):
+    for i in range(20):
+        self.tree.insert(i, f"value{i}")
+
+    result = self.tree.range_search(5, 15)
+    self.assertEqual(len(result), 11)
+    self.assertEqual(result[0][0], 5)
+    self.assertEqual(result[-1][0], 15)
