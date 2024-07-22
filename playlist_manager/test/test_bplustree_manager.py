@@ -29,4 +29,6 @@ def test_split(self):
 def test_insert_duplicate(self):
     self.tree.insert(10, "value10")
     self.tree.insert(10, "new_value10")
-    self.assertEqual(self.tree.search(10), "value10") # problemaaaaa 
+    self.assertEqual(self.tree.search(10), "new_value10")
+
+
