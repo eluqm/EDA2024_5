@@ -25,3 +25,8 @@ def test_split(self):
     # verifica que el arbol se ha dividido
     self.assertGreater(len(self.tree.root.children), 1)
     self.assertLessEqual(len(self.tree.root.keys), 2 * self.tree.t - 1)
+
+def test_insert_duplicate(self):
+    self.tree.insert(10, "value10")
+    self.tree.insert(10, "new_value10")
+    self.assertEqual(self.tree.search(10), "value10") # problemaaaaa 
