@@ -38,22 +38,35 @@ C.        Lista Enlazada
 La lista enlazada es una estructura de datos lineal donde cada elemento es un objeto separado que contiene un puntero al siguiente elemento en la lista. Es adecuada para inserciones y eliminaciones rápidas.
 
 
-III. Keyword  2  (Marco Teórico)
+III. Descripción del Proyecto 
+1. Características Clave del Programa
+Agregar canciones a la lista de reproducción: Permite añadir nuevas canciones a la lista.
+Eliminar canciones de la lista de reproducción: Permite eliminar canciones específicas de la lista.
+Cambiar el orden de las canciones en la lista: Permite reorganizar las canciones moviéndolas de una posición a otra.
+Reproducción aleatoria de canciones (opcional): Permite reproducir las canciones en un orden aleatorio.
+Ajuste dinámico del tamaño de la lista de reproducción en memoria: La lista de reproducción se ajusta dinámicamente en tamaño conforme se agregan o eliminan canciones.
+Interfaz gráfica (opcional): Proporciona una interfaz gráfica para una mejor experiencia del usuario.
 
 
-A.        Subtema 1
+2. Requisitos del Proyecto
 
 
-B.        Subtema 2
+Estructuras de Datos: El programa utilizará una o varias estructuras de datos implementadas durante el curso para almacenar las canciones. No se permite el uso de estructuras provenientes de las clases y/o colecciones de Java, a excepción de aquellas utilizadas exclusivamente para la interfaz gráfica si es necesario.
 
 
-C.        Subtema 3
+3. Funciones Principales
+agregar_cancion(cancion): Añade una canción a la lista de reproducción.
+eliminar_cancion(cancion): Elimina una canción de la lista de reproducción.
+cambiar_orden(posicion_actual, nueva_posicion): Cambia la canción de la posición actual a una nueva posición.
+reproduccion_aleatoria(): Reproduce las canciones en orden aleatorio.
+Manejo Dinámico de Memoria: La lista debe ajustarse dinámicamente en tamaño al agregar o eliminar canciones.
+Diferentes vistas de las canciones: Permite ordenar las canciones por popularidad, año, o duración, en orden ascendente o descendente según la selección del usuario.
 
 
-  
+4. Conjunto de Datos de Prueba
+5. Estructura del Repositorio
 
-IV. Metodología
-1. Caso 1
+
 El repositorio de nuestro proyecto, EDA2024_5, está organizado de la siguiente manera:
 
 
@@ -86,30 +99,14 @@ EDA2024_5/
     └── trie.py
 
 
+main.py: Archivo principal del programa.
+carpeta img: Contiene imágenes utilizadas en el proyecto.
+carpeta model: Contiene archivos relacionados con el modelo de datos
+carpeta test: Contiene archivos de pruebas
+carpeta util: Contiene utilidades del proyecto.
 
 
-
-
-2. Caso 2
-
-
-
-
-3. Caso 3
-
-
-
-
-4. Caso 4
-
-
-
-
-
-
-
-
-V. Resultados y Discusión
+V.. Metodología
 
 
 
