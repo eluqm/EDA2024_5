@@ -70,3 +70,7 @@ def test_tree_structure(self):
             self.assertLessEqual(len(node.keys), 2 * self.tree.t - 1)
 
     check_node(self.tree.root)
+
+def test_empty_tree(self):
+    self.assertIsNone(self.tree.search(10))
+    self.assertEqual(self.tree.range_search(0, 10), [])
