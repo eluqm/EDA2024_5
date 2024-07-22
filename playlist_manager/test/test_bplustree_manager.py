@@ -37,3 +37,10 @@ def test_insert_many(self):
 
     for i in range(100):
         self.assertEqual(self.tree.search(i), f"value{i}")
+
+def test_delete(self):
+    for i in range(10):
+        self.tree.insert(i, f"value{i}")
+
+    self.tree.delete(5)
+    self.assertIsNotNone(self.tree.search(5)) 
