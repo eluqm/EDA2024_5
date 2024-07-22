@@ -37,5 +37,13 @@ def test_get_song_by_id(self):
     self.assertIsNotNone(song)
     self.assertEqual(song.song_id, '1')
     self.assertEqual(song.track_name, 'Test Song 1')
-    # verifique q que no se encontrara song_id4 (no existe)
+    # ajustes para que se maneje casos inexistentes
     self.assertIsNone(self.file_manager.get_song_by_id('4'))
+
+def test_search_songs_by_name(self):
+    self.file_manager.load_songs()
+    songs = self.file_manager.search_songs_by_name("Test Song")
+    self.assertEqual(len(songs), 2)
+    self.assertEqual(songs[0].track_name, 'Test Song 1')
+    self.assertEqual(songs[1].track_name, 'Test Song 2')
+    self.assertEqual(len(self.file_manager.search_songs_by_name("Song")), 3)
