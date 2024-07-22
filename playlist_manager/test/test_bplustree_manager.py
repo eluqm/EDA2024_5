@@ -55,3 +55,18 @@ def test_range_search(self):
     self.assertEqual(len(result), 11)
     self.assertEqual(result[0][0], 5)
     self.assertEqual(result[-1][0], 15)
+
+def test_tree_structure(self):
+    for i in range(20):
+        self.tree.insert(i, f"value{i}")
+
+    def check_node(node):
+        if not node.leaf:
+            self.assertLessEqual(len(node.keys), 2 * self.tree.t - 1)
+            self.assertGreaterEqual(len(node.keys), self.tree.t - 1)
+            for child in node.children:
+                check_node(child)
+        else:
+            self.assertLessEqual(len(node.keys), 2 * self.tree.t - 1)
+
+    check_node(self.tree.root)
