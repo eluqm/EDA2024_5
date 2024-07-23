@@ -2,13 +2,14 @@
 import csv
 from model.song import Song
 from util.trie import Trie
+from util.hashmap_manager import HashMap
 
 class FileManager:
     def __init__(self, file_path, memory_manager, prefix_length=5):
         self.file_path = file_path
         self.memory_manager = memory_manager
         self.trie = Trie()
-        self.song_index = {}
+        self.song_index = HashMap() 
         self.prefix_length = prefix_length
 
     def load_songs(self):
@@ -27,12 +28,12 @@ class FileManager:
                 )
                 prefix = track_name[:self.prefix_length]
                 self.trie.insert(prefix, song_id)
-                self.song_index[song_id] = song
+                self.song_index.insert(song_id, song)  # Usar HashMap para insertar la canción
 
     def get_song_by_id(self, song_id):
         song = self.memory_manager.get_from_cache(song_id)
         if song is None:
-            song = self.song_index.get(song_id)
+            song = self.song_index.get(song_id)  # Usar HashMap para obtener la canción
             if song:
                 self.memory_manager.add_to_cache(song_id, song)
         return song
