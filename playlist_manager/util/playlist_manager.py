@@ -1,3 +1,4 @@
+import csv
 from util.trie import Trie
 from util.hashmap_manager import HashMap
 from util.bplustree_manager import BPlusTree
@@ -9,9 +10,39 @@ class PlaylistManager:
         self.hash_map = HashMap()
         self.bplus_tree = BPlusTree(t)
         self.memory_manager = MemoryManager(max_cache_size)
+        self.load_songs_from_csv("data/spotify_data.csv")
+
+    def load_songs_from_csv(self, file_path):
+        with open(file_path, newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                song_name = row['track_name']
+                song_details = {
+                    "song_id": int(row['song_id']),
+                    "name": row['track_name'],
+                    "artist": row['artist_name'],
+                    "track_id": row['track_id'],
+                    "popularity": int(row['popularity']),
+                    "year": int(row['year']),
+                    "genre": row['genre'],
+                    "danceability": float(row['danceability']),
+                    "energy": float(row['energy']),
+                    "key": int(row['key']),
+                    "loudness": float(row['loudness']),
+                    "mode": int(row['mode']),
+                    "speechiness": float(row['speechiness']),
+                    "acousticness": float(row['acousticness']),
+                    "instrumentalness": float(row['instrumentalness']),
+                    "liveness": float(row['liveness']),
+                    "valence": float(row['valence']),
+                    "tempo": float(row['tempo']),
+                    "duration": int(row['duration_ms']),
+                    "time_signature": int(row['time_signature'])
+                }
+                self.agregar_cancion(song_name, song_details)
 
     def agregar_cancion(self, song_name, song_details):
-        song_id = len(self.hash_map.get_all_keys())  # Usar el número de canciones como ID
+        song_id = song_details["song_id"]
         self.trie.insert(song_name, song_id)
         self.hash_map.insert(song_id, song_details)
         self.bplus_tree.insert(song_name, song_id)
@@ -63,8 +94,6 @@ class PlaylistManager:
 # Ejemplo de uso:
 if __name__ == "__main__":
     manager = PlaylistManager()
-    manager.agregar_cancion("Song1", {"name": "Song1", "artist": "Artist1", "year": 2021, "duration": 300, "popularity": 90})
-    manager.agregar_cancion("Song2", {"name": "Song2", "artist": "Artist2", "year": 2020, "duration": 200, "popularity": 80})
     print(manager.obtener_canciones())
-    manager.eliminar_cancion("Song1")
+    manager.eliminar_cancion("Shape of You")
     print(manager.obtener_canciones())
