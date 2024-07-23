@@ -40,3 +40,17 @@ class Trie:
         for child in node.children.values():
             ids.extend(self._collect_all_ids(child))
         return ids
+    
+    def delete(self, song_name, song_id):
+            def _delete(node, song_name, depth):
+                if depth == len(song_name):
+                    if song_id in node.song_ids:
+                        node.song_ids.remove(song_id)
+                    return len(node.song_ids) == 0 and len(node.children) == 0
+                char = song_name[depth]
+                if char in node.children and _delete(node.children[char], song_name, depth + 1):
+                    del node.children[char]
+                    return len(node.song_ids) == 0 and len(node.children) == 0
+                return False
+
+            _delete(self.root, song_name, 0)
