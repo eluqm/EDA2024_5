@@ -41,6 +41,8 @@ class Trie:
             ids.extend(self._collect_all_ids(child))
         return ids
     
+    
+    #Función delete
     def delete(self, song_name, song_id):
             def _delete(node, song_name, depth):
                 if depth == len(song_name):

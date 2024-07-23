@@ -1,4 +1,5 @@
 # playlist_manager/util/bplustree_manager.py
+
 class BPlusTreeNode:
     def __init__(self, t, leaf=False):
         self.t = t
@@ -49,14 +50,30 @@ class BPlusTree:
             node.keys[index + 1] = (key, value)
         else:
             index = len(node.keys) - 1
-            while index >= 0 and key < node.keys[index]:
+            while index >= 0 and key < node.keys[index][0]:
                 index -= 1
             index += 1
             if len(node.children[index].keys) == 2 * self.t - 1:
                 self._split_child(node, index)
-                if key > node.keys[index]:
+                if key > node.keys[index][0]:
                     index += 1
             self._insert_non_full(node.children[index], key, value)
+
+    def delete(self, key):
+        def _delete(node, key):
+            if node.leaf:
+                for i, (k, v) in enumerate(node.keys):
+                    if k == key:
+                        node.keys.pop(i)
+                        return True
+                return False
+            else:
+                for i, k in enumerate(node.keys):
+                    if key < k[0]:
+                        return _delete(node.children[i], key)
+                return _delete(node.children[-1], key)
+        
+        _delete(self.root, key)
 
     def search(self, key):
         return self._search(self.root, key)
