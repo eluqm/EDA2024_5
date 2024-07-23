@@ -1,10 +1,11 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from util.playlist_manager import PlaylistManager
 import tkinter as tk
 from ttkbootstrap import Style
 from ttkbootstrap.constants import *
-from util.trie import Trie
-from util.hashmap_manager import HashMap
-from util.bplustree_manager import BPlusTree
-from util.memory_manager import MemoryManager
 import random
 
 class PlaylistManagerApp:
@@ -13,13 +14,11 @@ class PlaylistManagerApp:
         self.style = Style(theme='cosmo')  # Elegir un tema de ttkbootstrap
         self.root.title("Playlist Manager")
 
-        # Inicializar estructuras de datos
-        self.trie = Trie()
-        self.hash_map = HashMap()
-        self.bplus_tree = BPlusTree(t=4)  # Elige un valor adecuado para t
-        self.memory_manager = MemoryManager(max_cache_size=100)
+        # Inicializar el gestor de listas de reproducción
+        self.manager = PlaylistManager()
 
         self.create_widgets()
+        self.update_song_listbox()
 
     def create_widgets(self):
         # Sección de información de la canción actual
@@ -93,44 +92,35 @@ class PlaylistManagerApp:
     def add_song(self):
         song = self.song_entry.get()
         if song:
-            song_id = len(self.hash_map.get_all_keys())  # Usar el número de canciones como ID
-            self.trie.insert(song, song_id)
-            self.hash_map.insert(song_id, song)
-            self.bplus_tree.insert(song, song_id)
-            self.memory_manager.add_to_cache(song_id, song)
+            song_details = {"name": song, "artist": "Unknown", "year": 2021, "duration": 300, "popularity": 50}
+            self.manager.agregar_cancion(song, song_details)
             self.update_song_listbox()
 
     def remove_song(self):
         selected_song_index = self.song_listbox.curselection()
         if selected_song_index:
             song = self.song_listbox.get(selected_song_index)
-            song_ids = self.trie.search(song)
-            if song_ids:
-                song_id = song_ids[0]  # Asumimos que hay solo un ID por canción
-                self.trie.delete(song, song_id)
-                self.hash_map.delete(song_id)
-                self.bplus_tree.delete(song)
-                self.memory_manager.clear_cache()
-                self.update_song_listbox()
+            self.manager.eliminar_cancion(song)
+            self.update_song_listbox()
 
     def shuffle_songs(self):
-        song_ids = self.hash_map.get_all_keys()
-        random.shuffle(song_ids)
+        shuffled_songs = self.manager.reproduccion_aleatoria()
         self.song_listbox.delete(0, tk.END)
-        for song_id in song_ids:
-            song = self.hash_map.get(song_id)
-            self.song_listbox.insert(tk.END, song)
+        for song in shuffled_songs:
+            self.song_listbox.insert(tk.END, song["name"])
 
     def sort_songs(self):
         criterion = self.sort_options.get()
-        # Implementar lógica para ordenar canciones según el criterio seleccionado
-        self.update_song_listbox()
+        sorted_songs = self.manager.obtener_canciones(criterion)
+        self.song_listbox.delete(0, tk.END)
+        for song in sorted_songs:
+            self.song_listbox.insert(tk.END, song["name"])
 
     def update_song_listbox(self):
         self.song_listbox.delete(0, tk.END)
-        for song_id in self.hash_map.get_all_keys():
-            song = self.hash_map.get(song_id)
-            self.song_listbox.insert(tk.END, song)
+        songs = self.manager.obtener_canciones()
+        for song in songs:
+            self.song_listbox.insert(tk.END, f"{song['name']} by {song['artist']}")
 
 if __name__ == "__main__":
     root = tk.Tk()
