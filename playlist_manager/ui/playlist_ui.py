@@ -1,5 +1,6 @@
 import tkinter as tk
 from ttkbootstrap import Style
+from ttkbootstrap.constants import *
 from util.trie import Trie
 from util.hashmap_manager import HashMap
 from util.bplustree_manager import BPlusTree
@@ -9,7 +10,7 @@ import random
 class PlaylistManagerApp:
     def __init__(self, root):
         self.root = root
-        self.style = Style(theme='cyborg')  # Elegir un tema de ttkbootstrap
+        self.style = Style(theme='cosmo')  # Elegir un tema de ttkbootstrap
         self.root.title("Playlist Manager")
 
         # Inicializar estructuras de datos
@@ -39,13 +40,13 @@ class PlaylistManagerApp:
         self.play_controls_frame = ttk.Frame(self.current_song_frame, padding="10")
         self.play_controls_frame.grid(row=2, column=0, columnspan=2, sticky="ew")
 
-        self.play_button = ttk.Button(self.play_controls_frame, text="▶")
+        self.play_button = ttk.Button(self.play_controls_frame, text="▶", style="success.TButton")
         self.play_button.grid(row=0, column=1, padx=5)
 
-        self.previous_button = ttk.Button(self.play_controls_frame, text="⏮")
+        self.previous_button = ttk.Button(self.play_controls_frame, text="⏮", style="info.TButton")
         self.previous_button.grid(row=0, column=0, padx=5)
 
-        self.next_button = ttk.Button(self.play_controls_frame, text="⏭")
+        self.next_button = ttk.Button(self.play_controls_frame, text="⏭", style="info.TButton")
         self.next_button.grid(row=0, column=2, padx=5)
 
         # Barra de progreso
@@ -58,7 +59,7 @@ class PlaylistManagerApp:
         self.end_time_label = ttk.Label(self.progress_frame, text="3:30")
         self.end_time_label.grid(row=0, column=2, sticky="e")
 
-        self.progress_bar = ttk.Progressbar(self.progress_frame, length=200)
+        self.progress_bar = ttk.Progressbar(self.progress_frame, length=200, style="info.Horizontal.TProgressbar")
         self.progress_bar.grid(row=0, column=1, padx=10)
 
         # Sección de la lista de reproducción y controles
@@ -71,7 +72,7 @@ class PlaylistManagerApp:
         self.song_entry = ttk.Entry(self.playlist_frame)
         self.song_entry.grid(row=0, column=1, padx=5, pady=5)
 
-        self.add_button = ttk.Button(self.playlist_frame, text="Agregar", command=self.add_song)
+        self.add_button = ttk.Button(self.playlist_frame, text="Agregar", command=self.add_song, style="success.TButton")
         self.add_button.grid(row=0, column=2, padx=5, pady=5)
 
         self.sort_label = ttk.Label(self.playlist_frame, text="Ordenar por:")
@@ -80,13 +81,13 @@ class PlaylistManagerApp:
         self.sort_options = ttk.Combobox(self.playlist_frame, values=["Popularidad", "Año", "Duración"])
         self.sort_options.grid(row=1, column=1, padx=5, pady=5)
 
-        self.sort_button = ttk.Button(self.playlist_frame, text="Ordenar", command=self.sort_songs)
+        self.sort_button = ttk.Button(self.playlist_frame, text="Ordenar", command=self.sort_songs, style="primary.TButton")
         self.sort_button.grid(row=1, column=2, padx=5, pady=5)
 
         self.song_listbox = tk.Listbox(self.playlist_frame, height=15, width=50)
         self.song_listbox.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
 
-        self.remove_button = ttk.Button(self.playlist_frame, text="Eliminar canción seleccionada", command=self.remove_song)
+        self.remove_button = ttk.Button(self.playlist_frame, text="Eliminar canción seleccionada", command=self.remove_song, style="danger.TButton")
         self.remove_button.grid(row=3, column=0, columnspan=3, pady=5)
 
     def add_song(self):
