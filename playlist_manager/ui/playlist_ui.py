@@ -99,9 +99,6 @@ class PlaylistManagerApp:
         self.remove_button = ttk.Button(self.playlist_frame, text="Eliminar canción seleccionada", command=self.remove_song, style="danger.TButton")
         self.remove_button.grid(row=4, column=0, columnspan=4, pady=5)
 
-        self.load_more_button = ttk.Button(self.playlist_frame, text="Cargar más canciones", command=self.load_more_songs, style="info.TButton")
-        self.load_more_button.grid(row=5, column=0, columnspan=4, pady=5)
-
     def load_album_cover(self, path):
         try:
             image = Image.open(path)
@@ -169,10 +166,6 @@ class PlaylistManagerApp:
             for song_id in songs:
                 song = self.manager.hashmap.get(song_id)
                 self.song_listbox.insert(tk.END, f"{song.track_name} by {song.artist_name}")
-
-    def load_more_songs(self):
-        self.manager.file_manager.load_songs_from_csv(self.manager.file_path, 1000)
-        self.update_song_listbox()
 
 if __name__ == "__main__":
     root = tk.Tk()
