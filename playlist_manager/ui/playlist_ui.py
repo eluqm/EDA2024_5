@@ -18,7 +18,7 @@ class PlaylistManagerApp:
         self.root.geometry("1000x600")  # Tamaño de la ventana
 
         # Inicializar el gestor de listas de reproducción
-        file_path = 'data/spotify_data.csv'
+        file_path = '../data/spotify_data.csv'
         self.manager = PlaylistManager(file_path)
         self.create_widgets()
         self.update_song_listbox()
