@@ -26,26 +26,20 @@ class PlaylistManager:
     def buscar_canciones_por_nombre(self, song_name):
         return self.file_manager.search_songs_by_name(song_name)
 
-    def ordenar_playlist(self, criterio, orden='ascendente'):
+    def ordenar_playlist(self, criterio, orden):
+        reverse = orden == "descendente"
         songs = [self.hashmap.get(song_id) for song_id in self.hashmap.get_all_keys()]
 
-        if criterio == 'popularidad':
+        if criterio == "popularidad":
             key_func = lambda song: song.popularity
-        elif criterio == 'año':
+        elif criterio == "año":
             key_func = lambda song: song.year
-        elif criterio == 'duración':
-            key_func = lambda song: song.duration
+        elif criterio == "duración":
+            key_func = lambda song: song.duration_ms
         else:
-            raise ValueError("Criterio de ordenación no válido.")
+            return []
 
-        reverse = True if orden == 'descendente' else False
         sorted_songs = sorted(songs, key=key_func, reverse=reverse)
-
-        # Actualiza la hashmap con el orden nuevo
-        self.hashmap = HashMap()
-        for song in sorted_songs:
-            self.hashmap.insert(song.song_id, song)
-        
         return sorted_songs
 
     def reproduccion_aleatoria(self):
@@ -53,3 +47,11 @@ class PlaylistManager:
         song_ids = self.hashmap.get_all_keys()
         random.shuffle(song_ids)
         return [self.hashmap.get(song_id) for song_id in song_ids]
+
+# Ejemplo de uso:
+if __name__ == "__main__":
+    manager = PlaylistManager("data/spotify_data.csv")
+    print(manager.obtener_canciones())
+    manager.eliminar_cancion("Shape of You")
+    print(manager.obtener_canciones())
+
