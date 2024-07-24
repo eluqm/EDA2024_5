@@ -10,8 +10,11 @@ class PlaylistManager:
         self.file_manager.load_songs()
 
     def agregar_cancion(self, song):
-        self.hashmap.insert(song.song_id, song)
-        print(f"Se agregó la canción: {song.track_name} by {song.artist_name}")
+        if self.hashmap.get(song.song_id) is None:
+            self.hashmap.insert(song.song_id, song)
+            print(f"Se agregó la canción: {song.track_name} by {song.artist_name}")
+        else:
+            print(f"La canción {song.track_name} by {song.artist_name} ya está en la lista de reproducción.")
 
     def mostrar_playlist(self):
         keys = self.hashmap.get_all_keys()
@@ -54,4 +57,3 @@ if __name__ == "__main__":
     print(manager.obtener_canciones())
     manager.eliminar_cancion("Shape of You")
     print(manager.obtener_canciones())
-
