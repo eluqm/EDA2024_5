@@ -1,5 +1,3 @@
-# playlist_manager/util/bplustree_manager.py
-
 class BPlusTreeNode:
     def __init__(self, t, leaf=False):
         self.t = t
@@ -87,6 +85,17 @@ class BPlusTree:
         if node.leaf:
             return None
         return self._search(node.children[index], key)
+
+    def get_all_items(self):
+        current = self.root
+        while not current.leaf:
+            current = current.children[0]
+
+        all_items = []
+        while current:
+            all_items.extend(current.keys)
+            current = current.next
+        return all_items
 
     def display(self, node=None, level=0):
         if node is None:
