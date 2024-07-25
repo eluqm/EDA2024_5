@@ -36,7 +36,7 @@ class PlaylistManagerApp:
 
         self.album_cover_label = ttk.Label(self.current_song_frame)
         self.album_cover_label.grid(row=0, column=1, rowspan=2, sticky="e")
-        self.load_album_cover("img/album_cover.jpg")  # Actualiza con la imagen correcta
+        self.load_album_cover("../img/album_cover.jpg")  # Actualiza con la imagen correcta
 
         # Controles de reproducción
         self.play_controls_frame = ttk.Frame(self.current_song_frame, padding="10")
