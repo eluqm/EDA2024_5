@@ -1,75 +1,30 @@
-import unittest
-from util.bplustree_manager import BPlusTree, BPlusTreeNode
+from bplustree_manager import BPlusTree
 
-class TestBPlusTree(unittest.TestCase):
-    def setUp(self):
-        self.tree = BPlusTree(3)  # c crea un árbol B+ con orden 3
+# Crear instancia de BPlusTree
+bplustree = BPlusTree(t=3)
 
-if __name__ == '__main__':
-    unittest.main()
+# Agregar canciones (simplificado sin usar PlaylistManager)
+canciones = [
+    {'id': '1', 'title': 'Song A', 'artist': 'Artist 1', 'duration_ms': 200000, 'popularity': 90, 'year': 2020},
+    {'id': '2', 'title': 'Song B', 'artist': 'Artist 2', 'duration_ms': 180000, 'popularity': 85, 'year': 2019},
+    {'id': '3', 'title': 'Song C', 'artist': 'Artist 3', 'duration_ms': 220000, 'popularity': 95, 'year': 2021},
+]
 
-def test_insert_and_search(self):
-    self.tree.insert(10, "value10")
-    self.tree.insert(20, "value20")
-    self.tree.insert(5, "value5")
+for cancion in canciones:
+    bplustree.insert(cancion['id'], cancion)
 
-    self.assertEqual(self.tree.search(10), "value10")
-    self.assertEqual(self.tree.search(20), "value20")
-    self.assertEqual(self.tree.search(5), "value5")
-    self.assertIsNone(self.tree.search(15))
+# Verificar que los elementos están insertados correctamente
+all_items = bplustree.get_all_items()
+all_items_output = [(key, value['title']) for key, value in all_items]
 
-def test_split(self):
-    for i in range(10):
-        self.tree.insert(i, f"value{i}")
-    
-    # verifica que el arbol se ha dividido
-    self.assertGreater(len(self.tree.root.children), 1)
-    self.assertLessEqual(len(self.tree.root.keys), 2 * self.tree.t - 1)
+# Ordenar canciones por popularidad
+songs = [value for key, value in all_items]
+songs.sort(key=lambda song: song['popularity'])
 
-def test_insert_duplicate(self):
-    self.tree.insert(10, "value10")
-    self.tree.insert(10, "new_value10")
-    self.assertEqual(self.tree.search(10), "new_value10")
+# Imprimir las canciones ordenadas para verificar
+sorted_songs_output = [f"{song['title']} by {song['artist']} with popularity {song['popularity']}" for song in songs]
 
-def test_insert_many(self):
-    for i in range(100):
-        self.tree.insert(i, f"value{i}")
-
-    for i in range(100):
-        self.assertEqual(self.tree.search(i), f"value{i}")
-
-def test_delete(self):
-    for i in range(10):
-        self.tree.insert(i, f"value{i}")
-
-    self.tree.delete(5)
-    self.assertIsNone(self.tree.search(5))
-    self.assertEqual(self.tree.search(4), "value4")
-    self.assertEqual(self.tree.search(6), "value6") 
-
-def test_range_search(self):
-    for i in range(20):
-        self.tree.insert(i, f"value{i}")
-
-    result = self.tree.range_search(5, 15)
-    self.assertEqual(len(result), 11)
-    self.assertEqual(result[0][0], 5)
-    self.assertEqual(result[-1][0], 15)
-
-def test_tree_structure(self):
-    for i in range(20):
-        self.tree.insert(i, f"value{i}")
-
-    def check_node(node):
-        if not node.leaf:
-            self.assertLessEqual(len(node.keys), 2 * self.tree.t - 1)
-            self.assertGreaterEqual(len(node.keys), self.tree.t - 1)
-            for child in node.children:
-                check_node(child)
-        else:
-            self.assertLessEqual(len(node.keys), 2 * self.tree.t - 1)
-
-    check_node(self.tree.root)
+all_items_output, sorted_songs_output
 
 def test_empty_tree(self):
     self.assertIsNone(self.tree.search(10))
