@@ -2,7 +2,7 @@ class BPlusTreeNode:
     def __init__(self, t, leaf=False):
         self.t = t
         self.leaf = leaf
-        self.keys = []
+        self.keys = []  # Tuples of (key, value)
         self.children = []
         self.next = None
 
@@ -22,14 +22,19 @@ class BPlusTree:
         else:
             self._insert_non_full(root, key, value)
 
+
     def _split_child(self, parent, index):
         t = self.t
         node = parent.children[index]
         new_node = BPlusTreeNode(t, node.leaf)
+
         parent.children.insert(index + 1, new_node)
-        parent.keys.insert(index, node.keys[t-1][0])
+        # Inserción del primer elemento de la segunda mitad como clave en el padre
+        parent.keys.insert(index, node.keys[t - 1])
+
+        # Dividir las llaves y los hijos
         new_node.keys = node.keys[t:]
-        node.keys = node.keys[:t-1]
+        node.keys = node.keys[:t - 1]
 
         if not node.leaf:
             new_node.children = node.children[t:]
@@ -39,6 +44,7 @@ class BPlusTree:
             node.next = new_node
 
     def _insert_non_full(self, node, key, value):
+        print("Current keys in node:", node.keys)  # Verificar el contenido
         if node.leaf:
             index = len(node.keys) - 1
             node.keys.append((None, None))
@@ -66,8 +72,8 @@ class BPlusTree:
                         return True
                 return False
             else:
-                for i, k in enumerate(node.keys):
-                    if key < k[0]:
+                for i, (k, v) in enumerate(node.keys):
+                    if key < k:
                         return _delete(node.children[i], key)
                 return _delete(node.children[-1], key)
         
