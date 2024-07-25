@@ -29,18 +29,18 @@ class PlaylistManagerApp:
         self.current_song_frame.grid(row=0, column=0, columnspan=2, sticky="ew", padx=10, pady=10)
 
         self.song_title_label = ttk.Label(self.current_song_frame, text="Name of the music", font=("Helvetica", 16, "bold"))
-        self.song_title_label.grid(row=0, column=0, sticky="w")
+        self.song_title_label.grid(row=0, column=0, columnspan=2, sticky="ew")
 
         self.artist_label = ttk.Label(self.current_song_frame, text="Artist", font=("Helvetica", 12, "italic"))
-        self.artist_label.grid(row=1, column=0, sticky="w")
+        self.artist_label.grid(row=1, column=0, columnspan=2, sticky="ew")
 
         self.album_cover_label = ttk.Label(self.current_song_frame)
-        self.album_cover_label.grid(row=0, column=1, rowspan=2, sticky="e")
+        self.album_cover_label.grid(row=0, column=2, rowspan=3, padx=10, pady=10)
         self.load_album_cover("../img/album_cover.jpg")  # Actualiza con la imagen correcta
 
         # Controles de reproducción
         self.play_controls_frame = ttk.Frame(self.current_song_frame, padding="10")
-        self.play_controls_frame.grid(row=2, column=0, columnspan=2, sticky="ew")
+        self.play_controls_frame.grid(row=2, column=0, columnspan=3, sticky="ew")
 
         self.previous_button = ttk.Button(self.play_controls_frame, text="⏮", style="info.TButton")
         self.previous_button.grid(row=0, column=0, padx=5)
@@ -53,7 +53,7 @@ class PlaylistManagerApp:
 
         # Barra de progreso
         self.progress_frame = ttk.Frame(self.current_song_frame, padding="10")
-        self.progress_frame.grid(row=3, column=0, columnspan=2, sticky="ew")
+        self.progress_frame.grid(row=3, column=0, columnspan=3, sticky="ew")
 
         self.start_time_label = ttk.Label(self.progress_frame, text="0:00")
         self.start_time_label.grid(row=0, column=0, sticky="w")
@@ -96,8 +96,11 @@ class PlaylistManagerApp:
         self.sort_duration_button = ttk.Button(self.controls_frame, text="Duración", command=lambda: self.sort_songs("duración"), style="primary.TButton")
         self.sort_duration_button.grid(row=3, column=3, padx=5, pady=5)
 
+        self.random_sort_button = ttk.Button(self.controls_frame, text="Aleatorio", command=self.sort_random, style="primary.TButton")
+        self.random_sort_button.grid(row=3, column=4, padx=5, pady=5)
+
         self.order_options = ttk.Combobox(self.controls_frame, values=["ascendente", "descendente"])
-        self.order_options.grid(row=3, column=4, padx=5, pady=5)
+        self.order_options.grid(row=4, column=0, columnspan=5, padx=5, pady=5)
         self.order_options.current(0)  # Valor predeterminado: ascendente
 
         # Frame para la lista de reproducción
@@ -174,6 +177,12 @@ class PlaylistManagerApp:
             self.song_listbox.delete(0, tk.END)
             for index, song in enumerate(sorted_songs, 1):
                 self.song_listbox.insert(tk.END, f"{index}. {song.track_name} by {song.artist_name}")
+
+    def sort_random(self):
+        songs = self.manager.reproduccion_aleatoria()
+        self.song_listbox.delete(0, tk.END)
+        for index, song in enumerate(songs, 1):
+            self.song_listbox.insert(tk.END, f"{index}. {song.track_name} by {song.artist_name}")
 
     def update_song_listbox(self):
         self.song_listbox.delete(0, tk.END)
