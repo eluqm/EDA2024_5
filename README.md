@@ -1,3 +1,3 @@
 # EDA2024_5
 Reproductor de Música
-XD
+![Diagrama de Flujo](assets/diagrama_flujo.jpg)
