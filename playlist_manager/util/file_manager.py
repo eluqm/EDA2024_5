@@ -4,7 +4,7 @@ from util.trie import Trie
 from util.hashmap_manager import HashMap
 
 class FileManager:
-    def __init__(self, file_path, memory_manager, prefix_length=5):
+    def __init__(self, file_path, memory_manager, prefix_length=3):
         self.file_path = file_path
         self.memory_manager = memory_manager
         self.trie = Trie(prefix_length)
